@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ExternalLink, X, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -12,6 +12,36 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0.50;
+      
+      const attemptPlay = () => {
+        audio.play().then(() => {
+          setIsMusicPlaying(true);
+          // Remove listeners once music starts
+          window.removeEventListener('click', attemptPlay);
+          window.removeEventListener('touchstart', attemptPlay);
+        }).catch(err => {
+          console.log("Autoplay waiting for interaction:", err);
+        });
+      };
+
+      // Try to play immediately
+      attemptPlay();
+
+      // Add listeners for first interaction as a fallback
+      window.addEventListener('click', attemptPlay);
+      window.addEventListener('touchstart', attemptPlay);
+
+      return () => {
+        window.removeEventListener('click', attemptPlay);
+        window.removeEventListener('touchstart', attemptPlay);
+      };
+    }
+  }, []);
 
   const toggleMusic = () => {
     if (audioRef.current) {
@@ -133,14 +163,14 @@ export default function App() {
       <div className="fixed inset-0 bg-gradient-to-l from-black to-black/30" />
 
       {/* Stage Light Beams */}
-      <div className="fixed inset-0 opacity-70 pointer-events-none overflow-hidden z-10">
+      <div className="fixed inset-0 opacity-70 pointer-events-none overflow-hidden">
         <motion.div 
           animate={{ 
             opacity: [0.4, 0.7, 0.4],
             rotate: [-3, 3, -3]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] left-[5%] w-[70%] h-[160%] bg-gradient-to-b from-blue-400/30 via-blue-400/5 to-transparent blur-[300px] origin-top"
+          className="absolute -top-[20%] left-[5%] w-[70%] h-[160%] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent blur-[300px] origin-top"
           style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
         />
         <motion.div 
@@ -149,7 +179,7 @@ export default function App() {
             rotate: [3, -3, 3]
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute -top-[20%] right-[5%] w-[60%] h-[160%] bg-gradient-to-b from-purple-400/25 via-purple-400/5 to-transparent blur-[300px] origin-top"
+          className="absolute -top-[20%] right-[5%] w-[60%] h-[160%] bg-gradient-to-r from-transparent via-fuchsia-500/25 to-transparent blur-[300px] origin-top"
           style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
         />
         <motion.div 
@@ -158,7 +188,7 @@ export default function App() {
             scaleX: [1, 1.3, 1]
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[10%] left-[25%] w-[50%] h-[130%] bg-gradient-to-b from-white/25 via-white/5 to-transparent blur-[350px] origin-top"
+          className="absolute -top-[10%] left-[25%] w-[50%] h-[130%] bg-gradient-to-r from-transparent via-amber-200/20 to-transparent blur-[350px] origin-top"
           style={{ clipPath: 'polygon(50% 0%, 10% 100%, 90% 100%)' }}
         />
       </div>
