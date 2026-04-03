@@ -163,7 +163,7 @@ export default function App() {
       <div className="fixed inset-0 bg-gradient-to-l from-black to-black/30" />
 
       {/* Stage Light Beams */}
-      <div className="fixed inset-0 opacity-70 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 opacity-50 pointer-events-none overflow-hidden">
         <motion.div 
           animate={{ 
             opacity: [0.4, 0.7, 0.4],
@@ -499,7 +499,7 @@ export default function App() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className={`bg-zinc-900/95 border w-full max-w-[820px] max-h-[90vh] rounded-none shadow-2xl flex flex-col relative custom-scrollbar overflow-y-auto ${
+              className={`bg-zinc-900/95 border w-full max-w-[820px] max-h-[95vh] rounded-none shadow-2xl flex flex-col relative custom-scrollbar overflow-y-auto ${
                 projects[selectedProject].highlight 
                   ? 'border-[rgba(255,200,0,0.4)]' 
                   : 'border-white/10'
@@ -511,7 +511,7 @@ export default function App() {
                 {/* Row 1: Two columns */}
                 <div className="flex flex-col md:flex-row w-full border-b border-white/10">
                   {/* Left col (35%): Thumbnail */}
-                  <div className="w-full md:w-[35%] h-[200px] md:h-[140px] bg-zinc-800 rounded-none overflow-hidden relative">
+                  <div className="w-full md:w-[35%] h-[240px] md:h-[168px] bg-zinc-800 rounded-none overflow-hidden relative">
                     <img 
                       src={projects[selectedProject].image} 
                       alt={projects[selectedProject].name}
@@ -521,7 +521,7 @@ export default function App() {
                   </div>
 
                   {/* Right col (65%): Name + Hashtags */}
-                  <div className="w-full md:w-[65%] p-6 flex flex-col justify-start relative">
+                  <div className="w-full md:w-[65%] p-7 md:p-8 flex flex-col justify-start relative">
                     <div className="flex justify-between items-start">
                       <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-none">
                         {projects[selectedProject].name}
